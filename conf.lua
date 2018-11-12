@@ -6,6 +6,6 @@ function love.conf(t)
     t.window.x = 10
     t.window.y = 10
     t.window.display = 2
-    t.window.title = "TourParTour"
+    t.window.title = "PrototypeTourParTour"
   end
   
