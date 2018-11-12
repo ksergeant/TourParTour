@@ -1,0 +1,3 @@
+local bot = {}
+
+return bot
