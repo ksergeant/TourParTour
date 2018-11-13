@@ -16,16 +16,19 @@ local myGame = require("Game")
 local tableauCommand = "TabCommand :"
 local command = "nul"
 
+
+local Background ={}
+Background.img = love.graphics.newImage("images/Space.png")
+
 local Lander = {}
 Lander.x = 0
 Lander.y = 0
-Lander.angle = 270
+Lander.angle = 90
 Lander.speed = 300
 Lander.vx = 0
 Lander.vy = 0
 Lander.engineOn = false
-Lander.img = love.graphics.newImage("images/Final_Ship.png")
-Lander.imgEngine = love.graphics.newImage("images/Final_Engine.png")
+Lander.img = love.graphics.newImage("images/Ship1_blue.png")
 
 local listeCommand = {}
 local sprites = {}
@@ -98,6 +101,8 @@ function love.draw()
   end
   
    
+   love.graphics.draw(Background.img,1,1)
+   
    for y=1, #map do
       for x=1, #map[y] do
         if map[y][x] == 1 then
@@ -131,10 +136,13 @@ function love.keypressed(key)
   
   if key == "up" then
     Lander.y =  Lander.y - 50
-    if Lander.y < 50 then
-       Lander.y = 75
-    end
-  command = "up"
+    
+      if Lander.y < 50 then
+         Lander.y = 75
+      end
+    
+    Lander.angle = 360
+    command = "up"
     print(key)
   end
 
@@ -143,6 +151,9 @@ function love.keypressed(key)
     if Lander.y > 450 then
        Lander.y = 475
     end
+    
+    Lander.angle = 180
+    
     command = "down"
     print(key)
   end
@@ -152,6 +163,9 @@ function love.keypressed(key)
     if Lander.x < 50 then
        Lander.x = 75
     end
+    
+    Lander.angle = 270
+
     command = "left"
     print(key)
   end
@@ -161,6 +175,9 @@ function love.keypressed(key)
     if Lander.x > 700 then
        Lander.x = 725
     end
+    
+    Lander.angle = 90
+    
     command = "right"
     print(key)
   end
