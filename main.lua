@@ -16,9 +16,8 @@ local myGame = require("Game")
 local tableauCommand = "TabCommand :"
 local command = "nul"
 
-
-local Background ={}
-Background.img = love.graphics.newImage("images/Space.png")
+--local Background = {}
+--Background.img = love.graphics.newImage("images/Space.png")
 
 local Lander = {}
 Lander.x = 0
@@ -27,8 +26,16 @@ Lander.angle = 90
 Lander.speed = 300
 Lander.vx = 0
 Lander.vy = 0
+Lander.uniteC = 6
+Lander.uniteVol = 3
+Lander.energie = 100
+Lander.bouclier = 50
 Lander.engineOn = false
 Lander.img = love.graphics.newImage("images/Ship1_blue.png")
+
+
+bgm = love.audio.newSource("/sons/MainSound.wav", "stream")
+love.audio.play(bgm)
 
 local listeCommand = {}
 local sprites = {}
@@ -56,6 +63,8 @@ function love.load()
   largeur = love.graphics.getWidth()
   hauteur = love.graphics.getHeight()
   
+  love.audio.play(bgm)
+  
   Lander.x = 50+25
   Lander.y = 50+25
   
@@ -70,14 +79,12 @@ function love.load()
           {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
           {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
           {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-
-
     }
   
 end
 
 function love.update(dt)
-  
+  love.audio.play(bgm)
        -- Purge des sprites à supprimer
   for n=#sprites,1,-1 do
     if sprites[n].supprime == true then
@@ -87,8 +94,6 @@ function love.update(dt)
 
 end
   
-  
-
 
 function love.draw()
   
@@ -101,7 +106,7 @@ function love.draw()
   end
   
    
-   love.graphics.draw(Background.img,1,1)
+   love.graphics.draw(myGame.Background.img,1,1)
    
    for y=1, #map do
       for x=1, #map[y] do
@@ -121,8 +126,18 @@ function love.draw()
     sDebug = sDebug.. " y="..tostring(Lander.y)
     local Tab = "Tab"
     Tab = Tab.. "command="..tostring(command)
+    
+    local InfoPlayer = "Player1:"
+    InfoPlayer = InfoPlayer.. "Energie="..tostring(Lander.energie)
+    InfoPlayer = InfoPlayer.. " Bouclier=" ..tostring(Lander.bouclier)
+    InfoPlayer = InfoPlayer.. " UC="..tostring(Lander.uniteC)
+    InfoPlayer = InfoPlayer.. " UV="..tostring(Lander.uniteVol)
+
+
+    
 
     love.graphics.print(sDebug,0,0)
+    love.graphics.print(InfoPlayer, 200, 10)
     love.graphics.print(Tab,815, 30)
     
     love.graphics.rectangle("fill", 752, 450, 250,50)
@@ -130,6 +145,14 @@ function love.draw()
     love.graphics.print("Lancement",842, 470)
     love.graphics.setColor(255,255,255,100)
 end
+
+function love.mousepressed(x, y, button, istouch)
+   if button == 1 then 
+      Lander.x = x
+      Lander.y = y
+   end
+end
+
 
 
 function love.keypressed(key)
